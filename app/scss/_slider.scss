@@ -1,3 +1,38 @@
-.test {
-    color: #fff;
+@if $use-slider==true {
+    .slider {
+        width: 100%;
+        position: relative;
+        margin: auto;
+        overflow: hidden;
+        ul {
+            padding-left: 0;
+            width: 9999px;
+            position: relative;
+            margin: 0
+        }
+        li {
+            list-style: none;
+            float: left;
+        }
+        span {
+            font-size: 1.5rem;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            background: rgba(0, 0, 0, .5);
+            color: $color1
+        }
+        span:hover {
+            background: rgba(0, 0, 0, .8);
+            transition: all .3s;
+            font-size: 1.7rem;
+        }
+        .icon-navigate_before {
+            left: 5%;
+        }
+        .icon-navigate_next {
+            right: 5%;
+        }
+    }
 }
