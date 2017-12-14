@@ -47,6 +47,12 @@
  * appeler la function quand on clique sur les boutons next et before
  * 
  * CHANGER IMAGE QUAND ON CLIQUE SUR UNE PUCE
+ * Etape 1 : récupérer index de puce cliquée et l'affecter à indexImg
+ * Etape 2  : appeler changeImg() et activePuce()
+ * 
+ * AFFICHER LES LEGENDE DYNAMIQUEMENT DANS LA LIGHTBOX
+ * Etape 1 : Récuperr valeur de l'attr data-legend
+ * Etape 2 : Insere le contenu textuel dans .lightbox figcaption
  */
 
 'use strict';
@@ -74,6 +80,14 @@ $(function() {
 
     genreratePuces();
 
+    changeLegend = () => {
+
+        let legendTxt;
+        legendTxt = $(".galerie img").eq(indexImg).attr("data-legend");
+        $(".ligthbox  figcaption").text(legendTxt);
+        console.log(legendTxt);
+
+    }
     activePuce = () => {
 
             let liste = $('.ligthbox ul li');
@@ -107,6 +121,7 @@ $(function() {
         // chainage de function
         $(".ligthbox").fadeIn().css({ 'display': 'flex' });
         changeImg();
+        changeLegend();
         activePuce();
 
     });
@@ -116,6 +131,8 @@ $(function() {
     $(".cadre .icon-close").click(function() {
         $(".ligthbox").fadeOut();
     });
+
+
 
 
     // Clique sur next
@@ -131,6 +148,7 @@ $(function() {
 
         // console.log($(".galerie img").eq(indexImg + 1).attr('src'));
         // console.log($(".galerie img").eq(0).attr('src'));
+        changeLegend();
         changeImg();
         activePuce();
         // newSrc = $(".galerie img").eq(indexImg).attr('src');
@@ -148,6 +166,7 @@ $(function() {
         // console.log($(".galerie img").eq(indexImg + 1).attr('src'));
         // console.log($(".galerie img").eq(0).attr('src'));
         changeImg();
+        changeLegend();
         activePuce();
 
     });
@@ -157,6 +176,7 @@ $(function() {
         indexImg = $('.ligthbox li').index($(this));
 
         changeImg();
+        changeLegend();
         activePuce();
         console.log("puce cliquée");
 
