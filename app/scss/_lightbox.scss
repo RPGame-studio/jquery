@@ -20,6 +20,28 @@
         justify-content: center;
         align-items: center;
         display: none;
+        // LES PUCE DE LIGHTBOX
+        .list-puces {
+            padding: .3rem;
+            margin: 0 1rem;
+            text-align: center;
+            border-top: 1px solid lighten($color4, 70%);
+            li {
+                display: inline-block;
+                list-style: none;
+                font-size: 1.5rem;
+                margin: .5rem;
+                border: 1px solid $color4;
+                width: 20px;
+                height: 20px;
+                border-radius: 100%;
+                cursor: pointer
+            }
+            li:hover,
+            .puce-active {
+                background: $color4;
+            }
+        }
         .cadre {
             width: 90%;
             background: $color1;

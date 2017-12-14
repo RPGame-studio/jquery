@@ -804,6 +804,24 @@ body > footer {
   justify-content: center;
   align-items: center;
   display: none; }
+  .ligthbox .list-puces {
+    padding: .3rem;
+    margin: 0 1rem;
+    text-align: center;
+    border-top: 1px solid #d4d2d2; }
+    .ligthbox .list-puces li {
+      display: inline-block;
+      list-style: none;
+      font-size: 1.5rem;
+      margin: .5rem;
+      border: 1px solid #212020;
+      width: 20px;
+      height: 20px;
+      border-radius: 100%;
+      cursor: pointer; }
+    .ligthbox .list-puces li:hover,
+    .ligthbox .list-puces .puce-active {
+      background: #212020; }
   .ligthbox .cadre {
     width: 90%;
     background: #fff;
