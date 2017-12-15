@@ -1,0 +1,25 @@
+     @if $use-annuaire==true {
+         .annuaire {
+             font-family: Georgia, 'Times New Roman', Times, serif;
+             padding: 1rem 0;
+             .head {
+                 background: lighten($color4, 20%);
+                 p {
+                     color: $color1;
+                 }
+             }
+             .line:nth-child(even) {
+                 background: darken($color5, 5%);
+             }
+             .line:hover,
+             .active {
+                 background: darken($color2, 15%);
+             }
+             p {
+                 padding: 1rem;
+             }
+             span {
+                 cursor: pointer
+             }
+         }
+     }

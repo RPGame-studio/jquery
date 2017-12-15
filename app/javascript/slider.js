@@ -41,62 +41,64 @@ ETAP 1 : clearInterval pour stopper défilement
 
 $(function() {
 
-    let acceptDefil = true;
-    let widthSlider = $('.slider').width();
+    (function() {
+        let acceptDefil = true;
+        let widthSlider = $('.slider').width();
 
-    $('.slider li').width(widthSlider);
-
-    $(window).resize(function() {
-
-        widthSlider = $('.slider').width();
         $('.slider li').width(widthSlider);
-    })
 
-    function sliderNext() {
-        $(".slider ul").animate({ 'left': -widthSlider }, 1000, function() {
-            $('.slider li:last').after($('.slider li:first'));
-            $(this).css({ 'left': 0 });
-            acceptDefil = true;
+        $(window).resize(function() {
 
+            widthSlider = $('.slider').width();
+            $('.slider li').width(widthSlider);
+        })
 
-            // alert("Mon anim termine")
-        });
-
-    }
-
-
-    let intervalID = setInterval(sliderNext, 3000);
+        function sliderNext() {
+            $(".slider ul").animate({ 'left': -widthSlider }, 1000, function() {
+                $('.slider li:last').after($('.slider li:first'));
+                $(this).css({ 'left': 0 });
+                acceptDefil = true;
 
 
-    function sliderPrev() {
-        $('.slider ul').css({ 'left': -widthSlider });
-        $('.slider li:first').before($('.slider li:last'));
-        $(".slider ul").animate({ 'left': 0 }, 1000, function() {
+                // alert("Mon anim termine")
+            });
 
-            acceptDefil = true;
-        });
-
-    }
-
-
-    $('.slider .icon-navigate_before').click(function() {
-        if (acceptDefil) {
-            acceptDefil = false;
-            clearInterval(intervalID);
-            sliderPrev();
         }
-    })
 
 
-    $('.slider .icon-navigate_next').click(function() {
-        if (acceptDefil) {
-            acceptDefil = false;
-            clearInterval(intervalID);
-            sliderNext();
+        let intervalID = setInterval(sliderNext, 3000);
+
+
+        function sliderPrev() {
+            $('.slider ul').css({ 'left': -widthSlider });
+            $('.slider li:first').before($('.slider li:last'));
+            $(".slider ul").animate({ 'left': 0 }, 1000, function() {
+
+                acceptDefil = true;
+            });
+
         }
-    })
+
+
+        $('.slider .icon-navigate_before').click(function() {
+            if (acceptDefil) {
+                acceptDefil = false;
+                clearInterval(intervalID);
+                sliderPrev();
+            }
+        })
+
+
+        $('.slider .icon-navigate_next').click(function() {
+            if (acceptDefil) {
+                acceptDefil = false;
+                clearInterval(intervalID);
+                sliderNext();
+            }
+        })
 
 
 
-    // clearInterval(intervalID);
+        // clearInterval(intervalID);
+    })();
 });

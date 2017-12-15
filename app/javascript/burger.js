@@ -5,7 +5,11 @@ console.log("Hello les amisss");
 //**
 // le nav en display block avec une animation
 $(function() {
-    $('body > header span').click(function() {
-        $('nav').slideToggle();
-    });
+
+
+    (function() {
+        $('body > header span').click(function() {
+            $('nav').slideToggle();
+        });
+    })();
 });

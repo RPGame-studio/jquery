@@ -10,9 +10,56 @@ console.log("Hello les amisss");
 //**
 // le nav en display block avec une animation
 $(function() {
-    $('body > header span').click(function() {
-        $('nav').slideToggle();
-    });
+
+
+    (function() {
+        $('body > header span').click(function() {
+            $('nav').slideToggle();
+        });
+    })();
+});
+/**
+* OUVRIR UN ITEM ET FERMER LES AUTRES
+* Etape 1 : quand on clique sur un h1, si celui ci n'a pas la class active, 
+* on ferme tous les p et on ouvre le p suivant le h1 cliqué
+* - si il a la class active, c'est qu'il est deja ouvert donc on fait rien
+
+* Etape 2 : on retire la class active de tous les h1 et on ajoute la class active sur 
+* le h1 cliqué
+* 
+* Etape 3 : on retire l'icon-down sur tous les h1 et on ajouter icon-right sur ts les h1
+* 
+* Etape 4 : on alterne les class icon-down et icon-right sur this h1 (celui cliqué) 
+*/
+
+'use strict';
+
+$(function() {
+
+    // start scope
+    (function() {
+
+        let question, answer;
+
+        question = $('.accordeon h1');
+        answer = $('.accordeon p');
+
+        question.click(function() {
+            if (!$(this).hasClass('active')) {
+                // Etape 1
+                answer.slideUp(600);
+                $(this).next('p').slideDown(200);
+                // Etape 2
+                question.removeClass('active');
+                $(this).addClass('active');
+                // Etape 3
+                question.find('span').removeClass('icon-arrow_drop_down').addClass('icon-navigate_next');
+                // Etape 4 
+                $(this).find('span').toggleClass('icon-arrow_drop_down icon-navigate_next')
+            }
+        });
+    })();
+    // end scope 
 });
 /**
  * 
@@ -74,130 +121,275 @@ $(function() {
 'use strict';
 
 $(function() {
+    (function() {
+        // Variable
+        let nbImg, indexImg, newSrc, listPuces;
 
-    // Variable
-    let nbImg, indexImg, newSrc, listPuces;
+        nbImg = $(".galerie img").length;
 
-    nbImg = $(".galerie img").length;
+        console.log(nbImg);
+        //function Generate puce
 
-    console.log(nbImg);
-    //function Generate puce
+        genreratePuces = () => {
+            listPuces = '<ul class="list-puces">';
+            for (let i = 0; i < nbImg; i++) {
+                listPuces += '<li></li>';
+            }
+            listPuces += '</ul>';
+            $(".ligthbox .cadre").append(listPuces);
 
-    genreratePuces = () => {
-        listPuces = '<ul class="list-puces">';
-        for (let i = 0; i < nbImg; i++) {
-            listPuces += '<li></li>';
+            return listPuces;
         }
-        listPuces += '</ul>';
-        $(".ligthbox .cadre").append(listPuces);
 
-        return listPuces;
-    }
+        genreratePuces();
 
-    genreratePuces();
+        changeLegend = () => {
 
-    changeLegend = () => {
+            let legendTxt;
+            legendTxt = $(".galerie img").eq(indexImg).attr("data-legend");
+            $(".ligthbox  figcaption").text(legendTxt);
+            console.log(legendTxt);
 
-        let legendTxt;
-        legendTxt = $(".galerie img").eq(indexImg).attr("data-legend");
-        $(".ligthbox  figcaption").text(legendTxt);
-        console.log(legendTxt);
-
-    }
-    activePuce = () => {
-
-            let liste = $('.ligthbox ul li');
-            liste.removeClass("puce-active");
-            liste.eq(indexImg).addClass("puce-active");
-            console.log("Test");
         }
-        // console.log(listPuces);
+        activePuce = () => {
+
+                let liste = $('.ligthbox ul li');
+                liste.removeClass("puce-active");
+                liste.eq(indexImg).addClass("puce-active");
+                console.log("Test");
+            }
+            // console.log(listPuces);
 
 
-    // Function
-    changeImg = function() {
+        // Function
+        changeImg = function() {
 
 
-        newSrc = $(".galerie img").eq(indexImg).attr('src');
-        $(".ligthbox img").attr('src', newSrc);
-        console.log('index : ' + indexImg);
-        console.log('Prochaine img : ' + newSrc);
-
-
-
-
-    }
-
-    // Click sur image
-
-    $('.galerie img').click(function() {
-
-        indexImg = $('.galerie img').index($(this));
-        console.log(indexImg);
-        // chainage de function
-        $(".ligthbox").fadeIn().css({ 'display': 'flex' });
-        changeImg();
-        changeLegend();
-        activePuce();
-
-    });
-
-    // Close
-
-    $(".cadre .icon-close").click(function() {
-        $(".ligthbox").fadeOut();
-    });
+            newSrc = $(".galerie img").eq(indexImg).attr('src');
+            $(".ligthbox img").attr('src', newSrc);
+            console.log('index : ' + indexImg);
+            console.log('Prochaine img : ' + newSrc);
 
 
 
 
-    // Clique sur next
-    $(".cadre .icon-navigate_next").click(function() {
-        // if (indexImg < nbImg - 1) {
-        //     indexImg++;
+        }
 
-        // } else {
-        //     indexImg = 0;
-        // }
+        // Click sur image
 
-        indexImg = (indexImg + 1) % nbImg;
+        $('.galerie img').click(function() {
 
-        // console.log($(".galerie img").eq(indexImg + 1).attr('src'));
-        // console.log($(".galerie img").eq(0).attr('src'));
-        changeLegend();
-        changeImg();
-        activePuce();
-        // newSrc = $(".galerie img").eq(indexImg).attr('src');
-        // $(".ligthbox img").attr('src', newSrc);
+            indexImg = $('.galerie img').index($(this));
+            console.log(indexImg);
+            // chainage de function
+            $(".ligthbox").fadeIn().css({ 'display': 'flex' });
+            changeImg();
+            changeLegend();
+            activePuce();
 
-    });
+        });
 
-    // Click sur previous
-    $(".cadre .icon-navigate_before").click(function() {
+        // Close
 
-        // modulo utlisable sur paire impaire (autre chose)
+        $(".cadre .icon-close").click(function() {
+            $(".ligthbox").fadeOut();
+        });
 
-        //  indexImg = (indexImg - 1) % nbImg; Le navigateur compren que en de dessous de 0 il y a le reste du tableau
-        indexImg = ((indexImg - 1) + nbImg) % nbImg;
-        // console.log($(".galerie img").eq(indexImg + 1).attr('src'));
-        // console.log($(".galerie img").eq(0).attr('src'));
-        changeImg();
-        changeLegend();
-        activePuce();
 
-    });
 
-    $(".ligthbox li").click(function() {
 
-        indexImg = $('.ligthbox li').index($(this));
+        // Clique sur next
+        $(".cadre .icon-navigate_next").click(function() {
+            // if (indexImg < nbImg - 1) {
+            //     indexImg++;
 
-        changeImg();
-        changeLegend();
-        activePuce();
-        console.log("puce cliquée");
+            // } else {
+            //     indexImg = 0;
+            // }
 
-    });
+            indexImg = (indexImg + 1) % nbImg;
 
+            // console.log($(".galerie img").eq(indexImg + 1).attr('src'));
+            // console.log($(".galerie img").eq(0).attr('src'));
+            changeLegend();
+            changeImg();
+            activePuce();
+            // newSrc = $(".galerie img").eq(indexImg).attr('src');
+            // $(".ligthbox img").attr('src', newSrc);
+
+        });
+
+        // Click sur previous
+        $(".cadre .icon-navigate_before").click(function() {
+
+            // modulo utlisable sur paire impaire (autre chose)
+
+            //  indexImg = (indexImg - 1) % nbImg; Le navigateur compren que en de dessous de 0 il y a le reste du tableau
+            indexImg = ((indexImg - 1) + nbImg) % nbImg;
+            // console.log($(".galerie img").eq(indexImg + 1).attr('src'));
+            // console.log($(".galerie img").eq(0).attr('src'));
+            changeImg();
+            changeLegend();
+            activePuce();
+
+        });
+
+        $(".ligthbox li").click(function() {
+
+            indexImg = $('.ligthbox li').index($(this));
+
+            changeImg();
+            changeLegend();
+            activePuce();
+            console.log("puce cliquée");
+
+        });
+    })();
+});
+/**
+ * QUAND ON CLIQUE SUR BTN EDITER
+ * Etape 1 : Passer les content editable a true pour la ligne
+ * Etape 2 : get texts de la ligne
+ * Etape 3 : avec ajax on envoi les texts a un script php
+ */
+'use strict';
+
+$(function() {
+
+    // start scope
+    (function() {
+        let contenus = new Array();
+        $('.annuaire .icon-border_color').click(function() {
+            // console.log('test');
+            $(this).parent('p')
+                .parent('div')
+                .parent('.line')
+                .find('[contenteditable]')
+                .each(function(index, contenu) {
+                    console.log(index, contenu)
+                    console.log(contenu.textContent)
+                    $(this).attr('contenteditable', 'true');
+                    contenus.push(contenu.textContent);
+                });
+
+
+            console.log(contenus);
+        });
+
+
+    })();
+    // end scope 
+});
+/**
+ * MASQUER ICON CHECK AU CHARGEMENT DE LA PAGE
+ * ETAPE 1 : Masquer les icon-check avechide()
+ * 
+ * 
+ * RECUPER VAL DE DATA-DEFAULT POUR LAFFICHER DANS CHAQUE CHAMPS
+ * Etap 1 : pour chaque champs de saisie
+ * - récupérer (variable de val de l'attr data-default)
+ * - affcter au champ la valeur de l'attr data-default
+ * 
+ * VIDER UN CHAMPS DE SAISIE AU FOCUS SI PAS REMPLI
+ * Etape 1 : au focus si user n'a pas deja saisie son nom
+ * - on vide le champs
+ * - sinon on laisse ce que l'user a saisi
+ * 
+ * remettre par defaut dans un champ si non rempli
+ * etape 1 : au blur, si un champs non rempli par user
+ * - on remet la valeur par defaut
+ * - afficher le span .validation
+ * - remplacer .icon-check par .icon-close
+ 
+ QUAND LE FORMULAIRE EST ENVOYE
+ Etape 1 : si un seul champ n'est pas rempli
+ - on annule l'envoi du formulaire
+ - on affiche .icon-close dans les champs non remplis
+ Etape 2 : envoi des datas du formulaire avec ajax vers script php
+
+    FACTORISER LE CODE
+    Etape 1 : créer une fonction pour le changement des icons
+    et l'appeler dans notre code à chaque fois que nécessaire
+    
+ */
+
+'use strict';
+
+$(function() {
+
+    // start scope
+    (function() {
+
+        let dataDefault, listInput;
+        listInput = $('.formulaire [data-default]');
+        //Change icon
+        changeIcons = function(elem, icon1, icon2) {
+            $(elem).siblings(".validation").removeClass(icon1)
+                .addClass(icon2)
+                .show();
+
+        }
+        $(".formulaire .validation").hide();
+        listInput.each(function() {
+            dataDefault = $(this).attr('data-default');
+            $(this).val(dataDefault)
+        });
+
+
+        listInput.focus(function() {
+
+            if ($(this).val() == $(this).attr('data-default')) {
+                $(this).val("");
+            }
+        });
+
+
+        listInput.blur(function() {
+            if ($(this).val() == "") {
+                $(this).val($(this).attr('data-default'));
+                if ($(this).prop('required')) {
+                    changeIcons($(this), 'icon-check', 'icon-close');
+
+                    // $(this).siblings(".validation").show("slow").removeClass("icon-check").addClass('icon-close');
+                }
+            } else {
+                changeIcons($(this), 'icon-close', 'icon-check');
+                // $(this).siblings(".validation").show("slow").removeClass("icon-close").addClass('icon-check');
+            }
+        });
+
+        $('.formulaire').submit(function() {
+            let valid = true;
+            $('[required]').each(function() {
+                if ($(this).val() == $(this).attr('data-default')) {
+
+                    changeIcons($(this), 'icon-check', 'icon-close');
+                    // $(this).siblings(".validation").show("slow").removeClass("icon-check").addClass('icon-close');
+                    valid = false;
+                }
+            });
+
+
+            if (valid) {
+
+                $.ajax({
+
+                    //3 Proprietes methos post, 
+                    method: 'POST',
+                    url: 'envoi-form.php',
+                    data: $('.formulaire').serialize()
+
+                }).done(function(msg) {
+
+                    alert("Reponse : " + msg);
+                });
+            }
+            return false;
+        });
+
+
+    })();
+    // end scope 
 });
 /**
  * Etape 1 :  Positionner ul en left -(largue du slider)
@@ -242,62 +434,64 @@ ETAP 1 : clearInterval pour stopper défilement
 
 $(function() {
 
-    let acceptDefil = true;
-    let widthSlider = $('.slider').width();
+    (function() {
+        let acceptDefil = true;
+        let widthSlider = $('.slider').width();
 
-    $('.slider li').width(widthSlider);
-
-    $(window).resize(function() {
-
-        widthSlider = $('.slider').width();
         $('.slider li').width(widthSlider);
-    })
 
-    function sliderNext() {
-        $(".slider ul").animate({ 'left': -widthSlider }, 1000, function() {
-            $('.slider li:last').after($('.slider li:first'));
-            $(this).css({ 'left': 0 });
-            acceptDefil = true;
+        $(window).resize(function() {
 
+            widthSlider = $('.slider').width();
+            $('.slider li').width(widthSlider);
+        })
 
-            // alert("Mon anim termine")
-        });
-
-    }
-
-
-    let intervalID = setInterval(sliderNext, 3000);
+        function sliderNext() {
+            $(".slider ul").animate({ 'left': -widthSlider }, 1000, function() {
+                $('.slider li:last').after($('.slider li:first'));
+                $(this).css({ 'left': 0 });
+                acceptDefil = true;
 
 
-    function sliderPrev() {
-        $('.slider ul').css({ 'left': -widthSlider });
-        $('.slider li:first').before($('.slider li:last'));
-        $(".slider ul").animate({ 'left': 0 }, 1000, function() {
+                // alert("Mon anim termine")
+            });
 
-            acceptDefil = true;
-        });
-
-    }
-
-
-    $('.slider .icon-navigate_before').click(function() {
-        if (acceptDefil) {
-            acceptDefil = false;
-            clearInterval(intervalID);
-            sliderPrev();
         }
-    })
 
 
-    $('.slider .icon-navigate_next').click(function() {
-        if (acceptDefil) {
-            acceptDefil = false;
-            clearInterval(intervalID);
-            sliderNext();
+        let intervalID = setInterval(sliderNext, 3000);
+
+
+        function sliderPrev() {
+            $('.slider ul').css({ 'left': -widthSlider });
+            $('.slider li:first').before($('.slider li:last'));
+            $(".slider ul").animate({ 'left': 0 }, 1000, function() {
+
+                acceptDefil = true;
+            });
+
         }
-    })
+
+
+        $('.slider .icon-navigate_before').click(function() {
+            if (acceptDefil) {
+                acceptDefil = false;
+                clearInterval(intervalID);
+                sliderPrev();
+            }
+        })
+
+
+        $('.slider .icon-navigate_next').click(function() {
+            if (acceptDefil) {
+                acceptDefil = false;
+                clearInterval(intervalID);
+                sliderNext();
+            }
+        })
 
 
 
-    // clearInterval(intervalID);
+        // clearInterval(intervalID);
+    })();
 });

@@ -58,128 +58,128 @@
 'use strict';
 
 $(function() {
+    (function() {
+        // Variable
+        let nbImg, indexImg, newSrc, listPuces;
 
-    // Variable
-    let nbImg, indexImg, newSrc, listPuces;
+        nbImg = $(".galerie img").length;
 
-    nbImg = $(".galerie img").length;
+        console.log(nbImg);
+        //function Generate puce
 
-    console.log(nbImg);
-    //function Generate puce
+        genreratePuces = () => {
+            listPuces = '<ul class="list-puces">';
+            for (let i = 0; i < nbImg; i++) {
+                listPuces += '<li></li>';
+            }
+            listPuces += '</ul>';
+            $(".ligthbox .cadre").append(listPuces);
 
-    genreratePuces = () => {
-        listPuces = '<ul class="list-puces">';
-        for (let i = 0; i < nbImg; i++) {
-            listPuces += '<li></li>';
+            return listPuces;
         }
-        listPuces += '</ul>';
-        $(".ligthbox .cadre").append(listPuces);
 
-        return listPuces;
-    }
+        genreratePuces();
 
-    genreratePuces();
+        changeLegend = () => {
 
-    changeLegend = () => {
+            let legendTxt;
+            legendTxt = $(".galerie img").eq(indexImg).attr("data-legend");
+            $(".ligthbox  figcaption").text(legendTxt);
+            console.log(legendTxt);
 
-        let legendTxt;
-        legendTxt = $(".galerie img").eq(indexImg).attr("data-legend");
-        $(".ligthbox  figcaption").text(legendTxt);
-        console.log(legendTxt);
-
-    }
-    activePuce = () => {
-
-            let liste = $('.ligthbox ul li');
-            liste.removeClass("puce-active");
-            liste.eq(indexImg).addClass("puce-active");
-            console.log("Test");
         }
-        // console.log(listPuces);
+        activePuce = () => {
+
+                let liste = $('.ligthbox ul li');
+                liste.removeClass("puce-active");
+                liste.eq(indexImg).addClass("puce-active");
+                console.log("Test");
+            }
+            // console.log(listPuces);
 
 
-    // Function
-    changeImg = function() {
+        // Function
+        changeImg = function() {
 
 
-        newSrc = $(".galerie img").eq(indexImg).attr('src');
-        $(".ligthbox img").attr('src', newSrc);
-        console.log('index : ' + indexImg);
-        console.log('Prochaine img : ' + newSrc);
-
-
-
-
-    }
-
-    // Click sur image
-
-    $('.galerie img').click(function() {
-
-        indexImg = $('.galerie img').index($(this));
-        console.log(indexImg);
-        // chainage de function
-        $(".ligthbox").fadeIn().css({ 'display': 'flex' });
-        changeImg();
-        changeLegend();
-        activePuce();
-
-    });
-
-    // Close
-
-    $(".cadre .icon-close").click(function() {
-        $(".ligthbox").fadeOut();
-    });
+            newSrc = $(".galerie img").eq(indexImg).attr('src');
+            $(".ligthbox img").attr('src', newSrc);
+            console.log('index : ' + indexImg);
+            console.log('Prochaine img : ' + newSrc);
 
 
 
 
-    // Clique sur next
-    $(".cadre .icon-navigate_next").click(function() {
-        // if (indexImg < nbImg - 1) {
-        //     indexImg++;
+        }
 
-        // } else {
-        //     indexImg = 0;
-        // }
+        // Click sur image
 
-        indexImg = (indexImg + 1) % nbImg;
+        $('.galerie img').click(function() {
 
-        // console.log($(".galerie img").eq(indexImg + 1).attr('src'));
-        // console.log($(".galerie img").eq(0).attr('src'));
-        changeLegend();
-        changeImg();
-        activePuce();
-        // newSrc = $(".galerie img").eq(indexImg).attr('src');
-        // $(".ligthbox img").attr('src', newSrc);
+            indexImg = $('.galerie img').index($(this));
+            console.log(indexImg);
+            // chainage de function
+            $(".ligthbox").fadeIn().css({ 'display': 'flex' });
+            changeImg();
+            changeLegend();
+            activePuce();
 
-    });
+        });
 
-    // Click sur previous
-    $(".cadre .icon-navigate_before").click(function() {
+        // Close
 
-        // modulo utlisable sur paire impaire (autre chose)
+        $(".cadre .icon-close").click(function() {
+            $(".ligthbox").fadeOut();
+        });
 
-        //  indexImg = (indexImg - 1) % nbImg; Le navigateur compren que en de dessous de 0 il y a le reste du tableau
-        indexImg = ((indexImg - 1) + nbImg) % nbImg;
-        // console.log($(".galerie img").eq(indexImg + 1).attr('src'));
-        // console.log($(".galerie img").eq(0).attr('src'));
-        changeImg();
-        changeLegend();
-        activePuce();
 
-    });
 
-    $(".ligthbox li").click(function() {
 
-        indexImg = $('.ligthbox li').index($(this));
+        // Clique sur next
+        $(".cadre .icon-navigate_next").click(function() {
+            // if (indexImg < nbImg - 1) {
+            //     indexImg++;
 
-        changeImg();
-        changeLegend();
-        activePuce();
-        console.log("puce cliquée");
+            // } else {
+            //     indexImg = 0;
+            // }
 
-    });
+            indexImg = (indexImg + 1) % nbImg;
 
+            // console.log($(".galerie img").eq(indexImg + 1).attr('src'));
+            // console.log($(".galerie img").eq(0).attr('src'));
+            changeLegend();
+            changeImg();
+            activePuce();
+            // newSrc = $(".galerie img").eq(indexImg).attr('src');
+            // $(".ligthbox img").attr('src', newSrc);
+
+        });
+
+        // Click sur previous
+        $(".cadre .icon-navigate_before").click(function() {
+
+            // modulo utlisable sur paire impaire (autre chose)
+
+            //  indexImg = (indexImg - 1) % nbImg; Le navigateur compren que en de dessous de 0 il y a le reste du tableau
+            indexImg = ((indexImg - 1) + nbImg) % nbImg;
+            // console.log($(".galerie img").eq(indexImg + 1).attr('src'));
+            // console.log($(".galerie img").eq(0).attr('src'));
+            changeImg();
+            changeLegend();
+            activePuce();
+
+        });
+
+        $(".ligthbox li").click(function() {
+
+            indexImg = $('.ligthbox li').index($(this));
+
+            changeImg();
+            changeLegend();
+            activePuce();
+            console.log("puce cliquée");
+
+        });
+    })();
 });
